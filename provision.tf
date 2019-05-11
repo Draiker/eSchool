@@ -1,5 +1,5 @@
 resource "null_resource" remoteExecProvisionerWFolder {
-   depends_on = ["google_sql_database_instance.instance"]
+  depends_on = ["google_sql_database_instance.instance"]
   count = 1
   connection {
     host = "${google_compute_instance.jenkins.*.network_interface.0.access_config.0.nat_ip}"
@@ -35,22 +35,25 @@ resource "null_resource" remoteExecProvisionerWFolder {
     content = "${data.template_file.job_frontend.rendered}"
     destination = "/tmp/ansible/files/job_frontend.xml"
   }
+   provisioner "file" {
+    content = "${data.template_file.job_backend.rendered}"
+    destination = "/tmp/ansible/files/job_backend.xml"
+  }
 
 }
 
-
 resource "null_resource" inventoryFileWeb {
   depends_on = ["null_resource.remoteExecProvisionerWFolder"]
-  count = 2
+  count = 1
   connection {
-    host = "${google_compute_instance.jenkins.*.network_interface.0.access_config.0.nat_ip}"
+    host = "${google_compute_instance.ciserver.*.network_interface.0.access_config.0.nat_ip}"
     type = "ssh"
     user = "centos"
     private_key = "${file("${var.private_key_path}")}"
     agent = "false"
   }
   provisioner "remote-exec" {
-    inline = ["echo ${var.instance_name}-${count.index}\tansible_ssh_host=${element(google_compute_instance.web.*.network_interface.0.network_ip, count.index)}\tansible_user=centos\tansible_ssh_private_key_file=/home/centos/.ssh/id_rsa>>/tmp/ansible/hosts.txt"]
+    inline = ["echo ${var.instance_name}\tansible_ssh_host=${element(google_compute_instance.ciserver.*.network_interface.0.network_ip, count.index)}\tansible_user=centos\tansible_ssh_private_key_file=/home/centos/.ssh/id_rsa>>/tmp/ansible/hosts.txt"]
   }
 }
 
@@ -58,7 +61,7 @@ resource "null_resource" "ansibleProvision" {
   depends_on = ["null_resource.remoteExecProvisionerWFolder", "null_resource.inventoryFileWeb"]
   count = 1
   connection {
-    host = "${google_compute_instance.jenkins.*.network_interface.0.access_config.0.nat_ip}"
+    host = "${google_compute_instance.ciserver.*.network_interface.0.access_config.0.nat_ip}"
     type = "ssh"
     user = "centos"
     private_key = "${file("${var.private_key_path}")}"

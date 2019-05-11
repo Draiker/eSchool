@@ -4,13 +4,10 @@
   <description>Job eSchool backend</description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.11">
+    <hudson.plugins.disk__usage.DiskUsageProperty plugin="disk-usage@0.28"/>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.12">
       <gitLabConnection></gitLabConnection>
     </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
-    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.30">
-      <autoRebuild>false</autoRebuild>
-      <rebuildDisabled>false</rebuildDisabled>
-    </com.sonyericsson.rebuild.RebuildSettings>
     <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
       <maxConcurrentPerNode>0</maxConcurrentPerNode>
       <maxConcurrentTotal>0</maxConcurrentTotal>
@@ -21,7 +18,7 @@
       <paramsToUseForLimit></paramsToUseForLimit>
     </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.3">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.10.0">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -64,77 +61,55 @@ sonar.exclusions=**/*.java</properties>
       <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
       <injectBuildVariables>false</injectBuildVariables>
     </hudson.tasks.Maven>
+    <hudson.tasks.Shell>
+      <command>cp -r /tmp/ansible/backend $WORKSPACE/
+cp /tmp/ansible/files/application.properties $WORKSPACE/backend/
+cp -r /tmp/ansible/kubernetes $WORKSPACE/
+</command>
+    </hudson.tasks.Shell>
     <jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin plugin="publish-over-ssh@1.20.1">
       <delegate>
         <consolePrefix>SSH: </consolePrefix>
         <delegate plugin="publish-over@0.22">
           <publishers>
             <jenkins.plugins.publish__over__ssh.BapSshPublisher plugin="publish-over-ssh@1.20.1">
-              <configName>web0_server</configName>
+              <configName>docker_server</configName>
               <verbose>false</verbose>
               <transfers>
                 <jenkins.plugins.publish__over__ssh.BapSshTransfer>
-                  <remoteDirectory></remoteDirectory>
-                  <sourceFiles>**/*.jar</sourceFiles>
+                  <remoteDirectory>backend</remoteDirectory>
+                  <sourceFiles>**/backend/*</sourceFiles>
                   <excludes></excludes>
-                  <removePrefix>/target</removePrefix>
+                  <removePrefix>/backend</removePrefix>
                   <remoteDirectorySDF>false</remoteDirectorySDF>
                   <flatten>false</flatten>
                   <cleanRemote>false</cleanRemote>
                   <noDefaultExcludes>false</noDefaultExcludes>
                   <makeEmptyDirs>false</makeEmptyDirs>
                   <patternSeparator>[, ]+</patternSeparator>
-                  <execCommand>cat &lt;&lt;EOF | sudo tee -a /etc/systemd/system/eschool.service
-[Unit]
-Description=eSchool Java Service
-[Service]
-User=root
-# Path to application.properties
-WorkingDirectory=/home/centos/
-# path to bash script which calls jar file
-ExecStart=/home/centos/eschool
-SuccessExitStatus=143
-TimeoutStopSec=10
-Restart=on-failure
-RestartSec=5
-[Install]
-WantedBy=multi-user.target
-EOF
-cat &lt;&lt;EOF | sudo tee -a /home/centos/eschool
-#!/bin/sh
-sudo /usr/bin/java -jar eschool.jar
-EOF
-sudo chmod u+x eschool
-sudo systemctl daemon-reload
-sudo systemctl enable eschool.service
-sudo systemctl start eschool</execCommand>
+                  <execCommand></execCommand>
                   <execTimeout>120000</execTimeout>
                   <usePty>false</usePty>
                   <useAgentForwarding>false</useAgentForwarding>
                 </jenkins.plugins.publish__over__ssh.BapSshTransfer>
-              </transfers>
-              <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
-              <usePromotionTimestamp>false</usePromotionTimestamp>
-            </jenkins.plugins.publish__over__ssh.BapSshPublisher>
-          </publishers>
-          <continueOnError>false</continueOnError>
-          <failOnError>false</failOnError>
-          <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
-          <hostConfigurationAccess class="jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin" reference="../.."/>
-        </delegate>
-      </delegate>
-    </jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin>
-    <jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin plugin="publish-over-ssh@1.20.1">
-      <delegate>
-        <consolePrefix>SSH: </consolePrefix>
-        <delegate plugin="publish-over@0.22">
-          <publishers>
-            <jenkins.plugins.publish__over__ssh.BapSshPublisher plugin="publish-over-ssh@1.20.1">
-              <configName>web1_server</configName>
-              <verbose>false</verbose>
-              <transfers>
                 <jenkins.plugins.publish__over__ssh.BapSshTransfer>
-                  <remoteDirectory></remoteDirectory>
+                  <remoteDirectory>kubernetes</remoteDirectory>
+                  <sourceFiles>**/kubernetes/*</sourceFiles>
+                  <excludes></excludes>
+                  <removePrefix>/kubernetes</removePrefix>
+                  <remoteDirectorySDF>false</remoteDirectorySDF>
+                  <flatten>false</flatten>
+                  <cleanRemote>false</cleanRemote>
+                  <noDefaultExcludes>false</noDefaultExcludes>
+                  <makeEmptyDirs>false</makeEmptyDirs>
+                  <patternSeparator>[, ]+</patternSeparator>
+                  <execCommand></execCommand>
+                  <execTimeout>120000</execTimeout>
+                  <usePty>false</usePty>
+                  <useAgentForwarding>false</useAgentForwarding>
+                </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                  <remoteDirectory>backend</remoteDirectory>
                   <sourceFiles>**/*.jar</sourceFiles>
                   <excludes></excludes>
                   <removePrefix>/target</removePrefix>
@@ -144,32 +119,20 @@ sudo systemctl start eschool</execCommand>
                   <noDefaultExcludes>false</noDefaultExcludes>
                   <makeEmptyDirs>false</makeEmptyDirs>
                   <patternSeparator>[, ]+</patternSeparator>
-                  <execCommand>cat &lt;&lt;EOF | sudo tee -a /etc/systemd/system/eschool.service
-[Unit]
-Description=eSchool Java Service
-[Service]
-User=root
-# Path to application.properties
-#change this to your workspace
-WorkingDirectory=/home/centos/
-# path to bash script which calls jar file
-ExecStart=/home/centos/eschool
-SuccessExitStatus=143
-TimeoutStopSec=10
-Restart=on-failure
-RestartSec=5
-[Install]
-WantedBy=multi-user.target
-EOF
-cat &lt;&lt;EOF | sudo tee -a /home/centos/eschool
-#!/bin/sh
-sudo /usr/bin/java -jar eschool.jar
-EOF
-sudo chmod u+x eschool
-sudo systemctl daemon-reload
-sudo systemctl enable eschool.service
-sudo systemctl start eschool</execCommand>
-                  <execTimeout>120000</execTimeout>
+                  <execCommand>docker build -t eschool-backend -f  backend/Dockerfile .
+docker tag eschool-backend gcr.io/${project}/eschool-backend:0.0.1
+gcloud auth activate-service-account --key-file /tmp/ansible/.ssh/gcp_devops.json
+gcloud docker -- push gcr.io/${project}/eschool-backend
+gcloud beta container clusters get-credentials eschool-claster --region us-central1 --project ${project}
+kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat /tmp/ansible/.ssh/gcp-viewer.json)" --docker-email=draiker.ds@gmail.com
+kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "gcr-json-key"}]}'
+kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=/tmp/ansible/.ssh/gcp_sql.json
+kubectl create secret generic cloudsql-db-credentials --from-literal=username=root --from-literal=password=devops095eSchool
+kubectl apply -f kubernetes/deployment-backend.yml
+kubectl apply -f kubernetes/service-backend.yml
+kubectl apply -f kubernetes/ingress-eschool.yml
+</execCommand>
+                  <execTimeout>150000</execTimeout>
                   <usePty>false</usePty>
                   <useAgentForwarding>false</useAgentForwarding>
                 </jenkins.plugins.publish__over__ssh.BapSshTransfer>

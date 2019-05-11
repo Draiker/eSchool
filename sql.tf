@@ -7,13 +7,17 @@ data "null_data_source" "auth_mysql_allowed_1" {
   }
 }
 
+resource "random_id" "db_name_id" {
+  byte_length = 4
+}
+
 resource "google_sql_database_instance" "instance" {
-    name               = "${var.project}-db-instance373"
+    name               = "${var.project}-${var.db_instance_name}-${random_id.db_name_id.hex}"
     region             = "${var.region}"
     database_version   = "${var.database_version}"
 
     settings {
-        tier             = "db-f1-micro"
+        tier             = "${var.db_tier}"
         disk_autoresize  = "${var.disk_autoresize}"
         disk_size        = "${var.disk_size}"
         disk_type        = "${var.disk_type}"
@@ -21,10 +25,12 @@ resource "google_sql_database_instance" "instance" {
             ipv4_enabled = "true"
             authorized_networks = [
                "${data.null_data_source.auth_mysql_allowed_1.*.outputs}",
+               
             ]
         }
     }
 }
+
 resource "google_sql_database" "default" {
   name      = "${var.db_name}"
   project   = "${var.project}"

@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    external-dns.alpha.kubernetes.io/hostname: "app.devops095.com"
+spec:
+  rules:
+  - host: app.devops095.com
+    http:
+      paths:
+        - path: /api 
+          backend:
+            serviceName: eschool-backend
+            servicePort: 8080
+        - path: /*
+          backend:
+            serviceName: eschool-frontend
+            servicePort: 80

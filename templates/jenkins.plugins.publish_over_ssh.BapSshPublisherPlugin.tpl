@@ -2,14 +2,14 @@
 <jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin_-Descriptor plugin="publish-over-ssh@1.20.1">
   <hostConfigurations>
     <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
-      <name>web0_server</name>
+      <name>docker_server</name>
       <hostname>${web0_server}</hostname>
       <username>centos</username>
-      <secretPassword>{AQAAABAAAAAQj1WETKRVtxYhzBSC5d+foU4kbRsGRoYv0ZWjqu9caTw=}</secretPassword>
+      <secretPassword>{AQAAABAAAAAQpi9suuoz6QLpAJY+W4t8bMEq9WCmwuAZOuG6kDa+ng4=}</secretPassword>
       <remoteRootDir>/home/centos</remoteRootDir>
       <port>22</port>
       <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration">
-        <secretPassphrase>{AQAAABAAAAAQRnBPYADpe8Zn03oNOT6vt2mW1vE+oHYLYpy+F3MFLoo=}</secretPassphrase>
+        <secretPassphrase>{AQAAABAAAABAuHicDlHexO+hfIbORKpK268Mi/jZVU7D/qCFq+0JTZnU4eyvAzu/LAU8QHxH3wox5yOiq7MgBsUAIr3n/OdEzeQQud3c21w9/6vxyj38ROY=}</secretPassphrase>
         <key></key>
         <keyPath>/tmp/ansible/.ssh/devops095_ossh.pem</keyPath>
         <disableAllExec>false</disableAllExec>
@@ -18,35 +18,7 @@
       <overrideKey>false</overrideKey>
       <disableExec>false</disableExec>
       <keyInfo>
-        <secretPassphrase>{AQAAABAAAAAQO2f27lENFFygxns/015EidcYhMnAChvibJbsCi9Tz1g=}</secretPassphrase>
-        <key></key>
-        <keyPath></keyPath>
-      </keyInfo>
-      <jumpHost></jumpHost>
-      <proxyType></proxyType>
-      <proxyHost></proxyHost>
-      <proxyPort>0</proxyPort>
-      <proxyUser></proxyUser>
-      <proxyPassword></proxyPassword>
-    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
-        <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
-      <name>web1_server</name>
-      <hostname>${web1_server}</hostname>
-      <username>centos</username>
-      <secretPassword>{AQAAABAAAAAQj1WETKRVtxYhzBSC5d+foU4kbRsGRoYv0ZWjqu9caTw=}</secretPassword>
-      <remoteRootDir>/home/centos</remoteRootDir>
-      <port>22</port>
-      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration">
-        <secretPassphrase>{AQAAABAAAAAQRnBPYADpe8Zn03oNOT6vt2mW1vE+oHYLYpy+F3MFLoo=}</secretPassphrase>
-        <key></key>
-        <keyPath>/tmp/ansible/.ssh/devops095_ossh.pem</keyPath>
-        <disableAllExec>false</disableAllExec>
-      </commonConfig>
-      <timeout>300000</timeout>
-      <overrideKey>false</overrideKey>
-      <disableExec>false</disableExec>
-      <keyInfo>
-        <secretPassphrase>{AQAAABAAAAAQO2f27lENFFygxns/015EidcYhMnAChvibJbsCi9Tz1g=}</secretPassphrase>
+        <secretPassphrase>{AQAAABAAAABA+f6JlspwYa2SZobllh1BazZraPxJFmGpJL2sXvLoRC+ED8+BcIa4OgESYbGIl+L5dxdvAftZT0WsJs1c1sD2tOwui0VuS2hhMS7Gf3V2Gho=}</secretPassphrase>
         <key></key>
         <keyPath></keyPath>
       </keyInfo>
