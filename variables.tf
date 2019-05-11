@@ -1,5 +1,13 @@
 variable "key" {
-  default = ".credentials/devops-eSchool-fc685d2a3c32.json"
+  default = "ansible/.ssh/gcp_devops.json"
+}
+variable "public_key_path" {
+  description = "Path to file containing public key"
+  default     = "ansible/.ssh/devops095.pub"
+}
+variable "private_key_path" {
+  description = "Path to file containing private key"
+  default     = "ansible/.ssh/devops095_ossh.pem"
 }
 variable "project" {
   default = "devops-eschool-235723"
@@ -10,19 +18,18 @@ variable "region" {
 variable "zone" {
   default = "us-central1-a"
 }
-variable "machine_type" {
-  default = "g1-small"
+variable "machine_type_ciserver" {
+  default = "n1-standard-2"
 }
 variable "image" {
     default = "centos-cloud/centos-7"
 }
 variable "instance_name" {
-    default = "web"
+    default = "ciserver"
 }
 variable "count" {
-  default = "2"
+    default = "1"
 }
-
 
 
 //VPC vars
@@ -32,27 +39,20 @@ variable "countnat" {
 variable "ip_cidr_range_private" {
     default = "10.0.12.0/24"
 }
-variable "public_key_path" {
-  description = "Path to file containing public key"
-  default     = ".ssh/devops095.pub"
-}
-variable "private_key_path" {
-  description = "Path to file containing private key"
-  default     = ".ssh/devops095_ossh.pem"
-}
+
 //Database variable
 variable database_version {
   description = "The version of of the database. `MYSQL_5_6`"
   default     = "MYSQL_5_7"
 }
-variable tier {
+variable db_tier {
   description = "The machine tier or type. See this page for supported tiers and pricing: https://cloud.google.com/sql/pricing"
   default     = "db-f1-micro"
 }
 
 variable db_instance_name {
   description = "The name of the master instance"
-  default     = "dbinstancesc01"
+  default     = "db-eschool-draiker"
 }
 variable disk_autoresize {
   description = "Second Generation only. Configuration to increase storage size automatically."
@@ -102,17 +102,8 @@ variable user_password {
   description = "The password for the default user. If not set, a random one will be generated and available in the generated_user_password output variable."
   default     = "devops095eSchool"
 }
-variable "azs" {
-  description = "Run the GCP Instances in these Availability Zones"
-  type = "list"
-  default = ["us-central1-a", "us-central1-b"]
-}
 
-
-// Frontend vars
-variable "frontend_count" {
-  default = "2"
-}
-variable "frontend_name" {
-  default = "front"
+variable "claster_name" {
+  description = "Claster name"
+  default = "eschool-claster"
 }

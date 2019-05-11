@@ -1,6 +1,7 @@
 ### Terraform ###
 # General
 .credentials
+ansible/.ssh/
 cred/
 .terraform
 .ssh/
