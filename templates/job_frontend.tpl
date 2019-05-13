@@ -123,7 +123,6 @@ kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --dock
 kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "gcr-json-key"}]}'
 kubectl apply -f kubernetes/deployment-frontend.yml
 kubectl apply -f kubernetes/service-frontend.yml
-kubectl apply -f kubernetes/ingress-eschool.yml
 </execCommand>
                   <execTimeout>120000</execTimeout>
                   <usePty>false</usePty>

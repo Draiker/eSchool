@@ -24,13 +24,12 @@ data "template_file" "job_frontend" {
     key = "${var.key}"
     key_view = "${var.key_view}"
     project = "${var.project}"
-  # lb_backend = "${google_dns_record_set.eschool_app_subdomain.name}"
     lb_backend = "${google_compute_global_address.my_global_address.address}"
   }
 }
 
 data "template_file" "deploy_frontend" {
-  template = "${file("${path.module}/ansible/kubernetes/deployment-frontend.yml")}"
+  template = "${file("${path.module}/templates/deployment-frontend.yml.tpl")}"
   vars {
     project = "${var.project}"
   }
@@ -49,7 +48,8 @@ data "template_file" "job_backend" {
 }
 
 data "template_file" "deploy_backend" {
-  template = "${file("${path.module}/ansible/kubernetes/deployment-backend.yml")}"
+  template = "${file("${path.module}/templates/deployment-backend.yml.tpl")}"
+  depends_on = ["google_sql_database_instance.instance"]
   vars {
     project = "${var.project}"
     region = "${var.region}"
@@ -57,16 +57,8 @@ data "template_file" "deploy_backend" {
   }
 }
 
-data "template_file" "ingress_eschool" {
-  template = "${file("${path.module}/ansible/kubernetes/ingress-eschool.yml")}"
-  vars {
-    lb_backend = "${google_dns_record_set.eschool_app_subdomain.name}"
-    static_ip = "${google_compute_global_address.my_global_address.address}"
-  }
-}
-
-data "template_file" "service_lb" {
-  template = "${file("${path.module}/ansible/kubernetes/service-lb.yml")}"
+data "template_file" "service_backend" {
+  template = "${file("${path.module}/templates/service-backend.yml.tpl")}"
   vars {
     static_ip = "${google_compute_global_address.my_global_address.address}"
   }

@@ -47,13 +47,9 @@ resource "null_resource" remoteExecProvisionerWFolder {
     content = "${data.template_file.deploy_backend.rendered}"
     destination = "/tmp/ansible/kubernetes/deployment-backend.yml"
   }
-  provisioner "file" {
-    content = "${data.template_file.ingress_eschool.rendered}"
-    destination = "/tmp/ansible/kubernetes/ingress-eschool.yml"
-  }
-  provisioner "file" {
-    content = "${data.template_file.service_lb.rendered}"
-    destination = "/tmp/ansible/kubernetes/service-lb.yml"
+   provisioner "file" {
+    content = "${data.template_file.service_backend.rendered}"
+    destination = "/tmp/ansible/kubernetes/service-backend.yml"
   }
 }
 

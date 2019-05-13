@@ -45,6 +45,7 @@ resource "google_compute_global_address" "my_global_address" {
 # }
 
 //DNS rules
+
 resource "google_dns_record_set" "eschool_app_subdomain" {
   name          = "${var.app_subdomain}.${google_dns_managed_zone.eschool_app.dns_name}"
   managed_zone  = "${google_dns_managed_zone.eschool_app.name}"
