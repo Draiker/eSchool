@@ -1,3 +1,7 @@
+output "app_domain" {
+   value = ["${google_dns_record_set.eschool_app_subdomain.name}"]
+}
+
 output "public_ip_ciserver" {
    value = ["${google_compute_instance.ciserver.*.network_interface.0.access_config.0.nat_ip}"]
 }
@@ -7,5 +11,5 @@ output "public_ip_sql" {
 }
 
 output "lb_public_ip" {
-   value = ["${google_compute_address.address.*.address}"]
+   value = ["${google_compute_global_address.my_global_address.*.address}"]
 }

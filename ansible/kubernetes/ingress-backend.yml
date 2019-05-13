@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: eschool-backend-ingress
+  name: back-ingress
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: "35.226.187.211"
+    kubernetes.io/ingress.global-static-ip-name: "34.95.89.73"
 spec:
   backend:
     serviceName: eschool-backend

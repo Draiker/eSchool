@@ -23,6 +23,9 @@ resource "google_compute_instance" "ciserver" {
 sudo yum -y update
 sudo yum -y install epel-release
 sudo yum -y install ansible
+sudo yum -y install mc
+sudo yum -y install htop
+sudo yum -y install nano
 SCRIPT
 }
 

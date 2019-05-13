@@ -121,15 +121,16 @@ cp -r /tmp/ansible/kubernetes $WORKSPACE/
                   <patternSeparator>[, ]+</patternSeparator>
                   <execCommand>docker build -t eschool-backend -f  backend/Dockerfile .
 docker tag eschool-backend gcr.io/${project}/eschool-backend:0.0.1
-gcloud auth activate-service-account --key-file /tmp/ansible/.ssh/gcp_devops.json
+gcloud auth activate-service-account --key-file /tmp/${key}
 gcloud docker -- push gcr.io/${project}/eschool-backend
 gcloud beta container clusters get-credentials eschool-claster --region us-central1 --project ${project}
-kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat /tmp/ansible/.ssh/gcp-viewer.json)" --docker-email=draiker.ds@gmail.com
+kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat /tmp/${key_view})" --docker-email=draiker.ds@gmail.com
 kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "gcr-json-key"}]}'
-kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=/tmp/ansible/.ssh/gcp_sql.json
-kubectl create secret generic cloudsql-db-credentials --from-literal=username=root --from-literal=password=devops095eSchool
+kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=/tmp/${key_sql}
+kubectl create secret generic cloudsql-db-credentials --from-literal=username=${user_name} --from-literal=password=${user_password}
 kubectl apply -f kubernetes/deployment-backend.yml
 kubectl apply -f kubernetes/service-backend.yml
+kubectl apply -f kubernetes/service-lb.yml
 kubectl apply -f kubernetes/ingress-eschool.yml
 </execCommand>
                   <execTimeout>150000</execTimeout>

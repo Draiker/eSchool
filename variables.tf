@@ -1,6 +1,12 @@
 variable "key" {
   default = "ansible/.ssh/gcp_devops.json"
 }
+variable "key_sql" {
+  default = "ansible/.ssh/gcp_sql.json"
+}
+variable "key_view" {
+  default = "ansible/.ssh/gcp_view.json"
+}
 variable "public_key_path" {
   description = "Path to file containing public key"
   default     = "ansible/.ssh/devops095.pub"
@@ -22,22 +28,33 @@ variable "machine_type_ciserver" {
   default = "n1-standard-2"
 }
 variable "image" {
-    default = "centos-cloud/centos-7"
+  default = "centos-cloud/centos-7"
 }
 variable "instance_name" {
-    default = "ciserver"
+  default = "ciserver"
 }
 variable "count" {
-    default = "1"
+  default = "1"
+}
+variable "claster_name" {
+  description = "Claster name"
+  default = "eschool-claster"
+}
+
+variable "dns_zone" {
+  default = "draiker.pp.ua"
+}
+variable "app_subdomain" {
+  default = "eschool"
 }
 
 
 //VPC vars
 variable "countnat" {
-    default = "1"
+  default = "1"
 }
 variable "ip_cidr_range_private" {
-    default = "10.0.12.0/24"
+  default = "10.254.254.0/24"
 }
 
 //Database variable
@@ -103,7 +120,3 @@ variable user_password {
   default     = "devops095eSchool"
 }
 
-variable "claster_name" {
-  description = "Claster name"
-  default = "eschool-claster"
-}

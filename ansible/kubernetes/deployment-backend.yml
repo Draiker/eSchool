@@ -5,7 +5,7 @@ metadata:
   labels:
     app: eschool-backend
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       name: eschool-backend
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend-app
-        image: gcr.io/devops-eschool-235723/eschool-backend:0.0.1
+        image: gcr.io/${project}/eschool-backend:0.0.1
         imagePullPolicy: Always
         readinessProbe:
           httpGet:
@@ -27,7 +27,7 @@ spec:
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                  "-instances=devops-eschool-235723:us-central1:devops-eschool-235723-db-eschool=tcp:3306",
+                  "-instances=${project}:${region}:${db_instance_name}=tcp:3306",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-instance-credentials

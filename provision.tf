@@ -2,7 +2,7 @@ resource "null_resource" remoteExecProvisionerWFolder {
   depends_on = ["google_sql_database_instance.instance"]
   count = 1
   connection {
-    host = "${google_compute_instance.jenkins.*.network_interface.0.access_config.0.nat_ip}"
+    host = "${google_compute_instance.ciserver.*.network_interface.0.access_config.0.nat_ip}"
     type = "ssh"
     user = "centos"
     private_key = "${file("${var.private_key_path}")}"
@@ -27,19 +27,34 @@ resource "null_resource" remoteExecProvisionerWFolder {
     content = "${data.template_file.jenkins_conf.rendered}"
     destination = "/tmp/ansible/files/jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin.xml"
   }
-   provisioner "file" {
+  provisioner "file" {
     content = "${data.template_file.app_conf.rendered}"
     destination = "/tmp/ansible/files/application.properties"
   }
-   provisioner "file" {
+  provisioner "file" {
     content = "${data.template_file.job_frontend.rendered}"
     destination = "/tmp/ansible/files/job_frontend.xml"
   }
-   provisioner "file" {
+  provisioner "file" {
+    content = "${data.template_file.deploy_frontend.rendered}"
+    destination = "/tmp/ansible/kubernetes/deployment-frontend.yml"
+  }
+  provisioner "file" {
     content = "${data.template_file.job_backend.rendered}"
     destination = "/tmp/ansible/files/job_backend.xml"
   }
-
+  provisioner "file" {
+    content = "${data.template_file.deploy_backend.rendered}"
+    destination = "/tmp/ansible/kubernetes/deployment-backend.yml"
+  }
+  provisioner "file" {
+    content = "${data.template_file.ingress_eschool.rendered}"
+    destination = "/tmp/ansible/kubernetes/ingress-eschool.yml"
+  }
+  provisioner "file" {
+    content = "${data.template_file.service_lb.rendered}"
+    destination = "/tmp/ansible/kubernetes/service-lb.yml"
+  }
 }
 
 resource "null_resource" inventoryFileWeb {

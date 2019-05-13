@@ -5,7 +5,7 @@ resource "google_container_cluster" "primary" {
   remove_default_node_pool = true
   initial_node_count = 1
   
-  network                  = "${google_compute_network.my_vpc_network.name}"
+  network                  = "${google_compute_network.eschool_vpc_network.name}"
   subnetwork               = "${google_compute_subnetwork.private_subnetwork.name}"
 }
 

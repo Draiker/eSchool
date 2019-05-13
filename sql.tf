@@ -2,7 +2,7 @@ data "null_data_source" "auth_mysql_allowed_1" {
   count  = "${var.countnat}"
   inputs = {
     name  = "nat-${count.index + 1}"
-    value = "${element(google_compute_address.address.*.address, count.index)}"
+    value = "${element(google_compute_global_address.my_global_address.*.address, count.index)}"
     
   }
 }

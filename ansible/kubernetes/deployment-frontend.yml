@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend-app
-        image: gcr.io/devops-eschool-235723/eschool-frontend:0.0.1
+        image: gcr.io/${project}/eschool-frontend:0.0.1
         imagePullPolicy: Always
         livenessProbe:
           httpGet: 
